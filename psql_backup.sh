@@ -1,5 +1,5 @@
 #! /bin/bash
-DAILYLOGFILE="/var/log/mysql_backup.daily.log"
+DAILYLOGFILE="/var/log/psql_backup.daily.log"
 rm "$DAILYLOGFILE"
 /usr/bin/touch "$DAILYLOGFILE"
 /bin/chown backuppc:backuppc "$DAILYLOGFILE"
@@ -11,21 +11,20 @@ BACKUP_DIR="$1/$2/$3"
 SERVER=$2
 CONTAINER=$3
 
-run_message="Please run using /script_name backup_dir  server_ip container_name"
+run_message="Please run using /script_name backup_dir server_ip container_name"
 
 if [ -z "$SERVER" ] || [ -z "$BACKUP_DIR" ] || [ -z "$CONTAINER" ]  ; then
         echo $run_message;
         exit
 fi
 
-echo -e "Starting Mysql Docker backup conatiner with backup folder:$BACKUP_DIR , container:$CONTAINER , server: $SERVER ! \n"
+echo -e "Starting Psql Docker backup conatiner with backup folder:$BACKUP_DIR , container:$CONTAINER , server: $SERVER ! \n"
 /usr/bin/ssh  -x -l vipconsult $SERVER \
 sudo docker run --rm --link $CONTAINER:$CONTAINER \
--v /home/mysql/.my.cnf:/root/.my.cnf \
 -v $BACKUP_DIR:$BACKUP_DIR \
 -e backup_dir=$BACKUP_DIR \
 -e backup_container=$CONTAINER \
-vipconsult/mysql_backup \
+  vipconsult/psql_backup \
   2>  >(/usr/bin/tee -a ${DAILYLOGFILE} >&2)
 
 
