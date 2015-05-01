@@ -31,7 +31,7 @@ vipconsult/mysql_backup \
   2>  >(/usr/bin/tee -a ${DAILYLOGFILE} >&2)
 
 
-echi \n \n \n ".";
+echo \n \n \n ".";
 
 echo -e "Starting Psql Docker backup conatiner with BACKUP FOLDER:$BACKUP_DIR_PSQL , CONATINER:$CONTAINER_PSQL , HOST: $HOST ! \n"
 /usr/bin/ssh  -x -l vipconsult $HOST \
